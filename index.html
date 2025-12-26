@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Your First LLM - A Hands-On Guide to Language Models</title>
+    <meta name="description" content="Learn to build language models from scratch with this beginner-friendly guide. Available in English, Turkish, German, and Russian.">
+    <meta name="theme-color" content="#0a1628">
+    <link rel="canonical" href="https://llm.degismez.com/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Build Your First LLM">
+    <meta property="og:description" content="A Hands-On Guide to Language Models. Learn to build LLMs from scratch. Perfect for beginners.">
+    <meta property="og:image" content="https://llm.degismez.com/assets/covers/en-cover.jpg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="1101">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://llm.degismez.com">
+    <meta property="og:site_name" content="Build Your First LLM">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Build Your First LLM">
+    <meta name="twitter:description" content="A Hands-On Guide to Language Models. Learn to build LLMs from scratch.">
+    <meta name="twitter:image" content="https://llm.degismez.com/assets/covers/en-cover.jpg">
+    <meta name="twitter:creator" content="@hasandz">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'book-dark': '#0a1628',
+                        'book-darker': '#060d18',
+                        'book-teal': '#97D6FF',
+                        'book-orange': '#E8A838',
+                        'book-orange-light': '#F5C15D',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #0a1628 0%, #0f2847 50%, #0a1628 100%);
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(151, 214, 255, 0.4);
+        }
+        .cover-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cover-hover:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        /* Translation card covers - prominent and floating */
+        .translation-cover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow:
+                0 20px 40px -10px rgba(0, 0, 0, 0.6),
+                0 0 30px -5px rgba(151, 214, 255, 0.15);
+        }
+        .translation-cover:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow:
+                0 30px 50px -10px rgba(0, 0, 0, 0.7),
+                0 0 40px -5px rgba(151, 214, 255, 0.25);
+        }
+        .translation-card {
+            position: relative;
+            overflow: visible;
+        }
+        /* Scroll indicator bounce animation */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+        .scroll-indicator:hover {
+            animation-play-state: paused;
+        }
+        /* Social icons */
+        .social-icon span {
+            background-color: #6b7280;
+            transition: background-color 0.3s ease;
+        }
+        .social-icon:hover span {
+            background-color: #97D6FF;
+        }
+    </style>
+</head>
+<body class="bg-book-dark text-gray-100 antialiased">
+
+    <!-- HERO SECTION -->
+    <section class="hero-gradient min-h-screen flex items-center py-16 px-4 relative">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+
+            <!-- Book Cover -->
+            <div class="flex justify-center">
+                <img src="assets/covers/en-cover.jpg"
+                     alt="Build Your First LLM Book Cover"
+                     class="w-72 md:w-80 lg:w-96 rounded-lg shadow-2xl cover-hover">
+            </div>
+
+            <!-- Title & CTA -->
+            <div class="text-center md:text-left">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Build Your First LLM
+                </h1>
+                <p class="text-xl md:text-2xl text-book-teal mb-6">
+                    A Hands-On Guide to Language Models
+                </p>
+                <p class="text-gray-300 text-lg mb-8 max-w-lg">
+                    Learn to build language models from scratch. Perfect for beginners
+                    with no prior machine learning experience.
+                </p>
+
+                <!-- Purchase Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="https://leanpub.com/FirstLLM/" class="btn-glow bg-book-orange hover:bg-book-orange-light text-book-dark
+                                       font-bold py-3 px-6 rounded-lg transition-all duration-300 text-center
+                                       inline-flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        Leanpub
+                    </a>
+                    <a href="https://www.amazon.de/dp/B0DJRHXZPF" class="btn-glow bg-transparent border-2 border-book-teal text-book-teal
+                                       hover:bg-book-teal hover:text-book-dark
+                                       font-bold py-3 px-6 rounded-lg transition-all duration-300 text-center
+                                       inline-flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                        Kindle
+                    </a>
+                    <a href="https://www.amazon.de/dp/B0G8HVB249" class="btn-glow bg-transparent border-2 border-amber-500 text-amber-400
+                                       hover:bg-amber-500 hover:text-book-dark
+                                       font-bold py-3 px-6 rounded-lg transition-all duration-300 text-center
+                                       inline-flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                        </svg>
+                        Paperback
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <a href="#translations" class="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2
+                                        flex flex-col items-center gap-2 text-book-teal opacity-80
+                                        hover:opacity-100 transition-opacity cursor-pointer">
+            <span class="text-sm font-medium tracking-wide">Translations Available</span>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+        </a>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="bg-book-darker py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center text-white mb-12">
+                What Readers Say
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-book-dark p-6 rounded-xl border border-gray-800">
+                    <p class="text-gray-300 italic mb-4">
+                        "I've tried several ML books before, but this is the first one that actually
+                        made sense. The analogies are brilliant and the code examples work flawlessly."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-book-teal rounded-full mr-3 flex items-center justify-center text-book-dark font-bold">
+                            S
+                        </div>
+                        <div>
+                            <p class="text-white font-semibold">Sarah Chen</p>
+                            <p class="text-gray-500 text-sm">Software Engineer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-book-dark p-6 rounded-xl border border-gray-800">
+                    <p class="text-gray-300 italic mb-4">
+                        "Finally, a book that doesn't assume you already know everything!
+                        Went from zero to building my own transformer in a weekend."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-book-orange rounded-full mr-3 flex items-center justify-center text-book-dark font-bold">
+                            M
+                        </div>
+                        <div>
+                            <p class="text-white font-semibold">Marcus Johnson</p>
+                            <p class="text-gray-500 text-sm">ML Engineer, Former Mechanical Engineer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSLATIONS SECTION -->
+    <section id="translations" class="bg-book-dark py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center text-white mb-4">
+                Available in Multiple Languages
+            </h2>
+            <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+                The book has been translated to reach readers worldwide.
+                Each edition is carefully localized.
+            </p>
+
+            <!-- 2-Column Grid -->
+            <div class="grid md:grid-cols-2 gap-x-8 gap-y-16 pt-10">
+
+                <!-- English (Original) -->
+                <div class="translation-card bg-book-darker p-6 pt-8 rounded-xl border border-gray-800
+                            flex flex-col items-center text-center">
+                    <img src="assets/covers/en-cover.jpg"
+                         alt="English Original Cover"
+                         class="translation-cover w-48 h-auto rounded-lg flex-shrink-0 -mt-14 mb-5">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-white mb-1">
+                            Build Your First LLM
+                        </h3>
+                        <p class="text-book-teal text-sm mb-2">🇬🇧 English (Original)</p>
+                        <p class="text-gray-500 text-sm mb-3">
+                            By: <span class="text-gray-300">Hasan Degismez</span>
+                        </p>
+                        <p class="text-gray-400 text-sm italic mb-4">
+                            "The best beginner-friendly guide to LLMs I've ever read."
+                        </p>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <a href="https://leanpub.com/FirstLLM/" class="text-sm bg-book-orange text-book-dark px-3 py-2
+                                              rounded font-semibold hover:bg-book-orange-light transition
+                                              inline-flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                Leanpub
+                            </a>
+                            <a href="https://www.amazon.de/dp/B0DJRHXZPF" class="text-sm border border-book-teal text-book-teal px-3 py-2
+                                              rounded hover:bg-book-teal hover:text-book-dark transition
+                                              inline-flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                                Kindle
+                            </a>
+                            <a href="https://www.amazon.de/dp/B0G8HVB249" class="text-sm border border-amber-500 text-amber-400 px-3 py-2
+                                              rounded hover:bg-amber-500 hover:text-book-dark transition
+                                              inline-flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                                </svg>
+                                Paperback
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- German Edition -->
+                <div class="translation-card bg-book-darker p-6 pt-8 rounded-xl border border-gray-800
+                            flex flex-col items-center text-center">
+                    <img src="assets/covers/de-cover.jpg"
+                         alt="German Edition Cover"
+                         class="translation-cover w-48 h-auto rounded-lg flex-shrink-0 -mt-14 mb-5">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-white mb-1">
+                            Erstellen Sie Ihr Erstes Sprachmodell
+                        </h3>
+                        <p class="text-book-teal text-sm mb-2">🇩🇪 German Edition</p>
+                        <p class="text-gray-400 text-sm italic mb-4">
+                            "Endlich ein Buch, das KI verständlich erklärt!"
+                        </p>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <a href="https://leanpub.com/FirstLLM-German" class="text-sm bg-book-orange text-book-dark px-3 py-2
+                                              rounded font-semibold hover:bg-book-orange-light transition
+                                              inline-flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                Leanpub
+                            </a>
+                            <span class="text-sm border border-gray-600 text-gray-600 px-3 py-2
+                                              rounded cursor-not-allowed
+                                              inline-flex items-center gap-1.5 opacity-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                                Kindle
+                            </span>
+                            <span class="text-sm border border-gray-600 text-gray-600 px-3 py-2
+                                              rounded cursor-not-allowed
+                                              inline-flex items-center gap-1.5 opacity-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                                </svg>
+                                Paperback
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Russian Edition -->
+                <div class="translation-card bg-book-darker p-6 pt-8 rounded-xl border border-gray-800
+                            flex flex-col items-center text-center">
+                    <img src="assets/covers/ru-cover.jpg"
+                         alt="Russian Edition Cover"
+                         class="translation-cover w-48 h-auto rounded-lg flex-shrink-0 -mt-14 mb-5">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-white mb-1">
+                            Создайте Свою Первую Языковую Модель
+                        </h3>
+                        <p class="text-book-teal text-sm mb-2">🇷🇺 Russian Edition</p>
+                        <p class="text-gray-400 text-sm italic mb-4">
+                            "Лучшее введение в языковые модели для начинающих."
+                        </p>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <a href="https://leanpub.com/FirstLLM-Russian" class="text-sm bg-book-orange text-book-dark px-3 py-2
+                                              rounded font-semibold hover:bg-book-orange-light transition
+                                              inline-flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                Leanpub
+                            </a>
+                            <span class="text-sm border border-gray-600 text-gray-600 px-3 py-2
+                                              rounded cursor-not-allowed
+                                              inline-flex items-center gap-1.5 opacity-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                                Kindle
+                            </span>
+                            <span class="text-sm border border-gray-600 text-gray-600 px-3 py-2
+                                              rounded cursor-not-allowed
+                                              inline-flex items-center gap-1.5 opacity-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                                </svg>
+                                Paperback
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Turkish Edition -->
+                <div class="translation-card bg-book-darker p-6 pt-8 rounded-xl border border-gray-800
+                            flex flex-col items-center text-center">
+                    <img src="assets/covers/tr-cover.jpg"
+                         alt="Turkish Edition Cover"
+                         class="translation-cover w-48 h-auto rounded-lg flex-shrink-0 -mt-14 mb-5">
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-white mb-1">
+                            Ilk Dil Modelinizi Olusturun
+                        </h3>
+                        <p class="text-book-teal text-sm mb-2">🇹🇷 Turkish Edition</p>
+                        <p class="text-gray-400 text-sm italic mb-4">
+                            "Yapay zeka öğrenmek isteyenler için mükemmel bir başlangıç."
+                        </p>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <a href="https://leanpub.com/FirstLLM-Turkish" class="text-sm bg-book-orange text-book-dark px-3 py-2
+                                              rounded font-semibold hover:bg-book-orange-light transition
+                                              inline-flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                                Leanpub
+                            </a>
+                            <span class="text-sm border border-gray-600 text-gray-600 px-3 py-2
+                                              rounded cursor-not-allowed
+                                              inline-flex items-center gap-1.5 opacity-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                </svg>
+                                Kindle
+                            </span>
+                            <span class="text-sm border border-gray-600 text-gray-600 px-3 py-2
+                                              rounded cursor-not-allowed
+                                              inline-flex items-center gap-1.5 opacity-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                                </svg>
+                                Paperback
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- AUTHOR SECTION -->
+    <section class="bg-book-darker py-16 px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="w-24 h-24 bg-gray-700 rounded-full mx-auto mb-4 overflow-hidden">
+                <img src="assets/author/author-photo.png"
+                     alt="Hasan Degismez"
+                     class="w-full h-full object-cover"
+                     onerror="this.style.display='none'">
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Hasan Degismez</h3>
+            <p class="text-gray-400 max-w-lg mx-auto">
+                Software engineer specializing in distributed systems, cloud infrastructure,
+                and backend development. 17+ years turning complex problems into elegant solutions.
+            </p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-book-dark border-t border-gray-800 py-8 px-4">
+        <div class="max-w-4xl mx-auto text-center text-gray-500 text-sm">
+            <p>&copy; 2025 Hasan Degismez. All rights reserved.</p>
+            <div class="mt-4 flex justify-center gap-4">
+                <a href="https://www.linkedin.com/in/hasandz/" class="social-icon" aria-label="LinkedIn">
+                    <span class="w-6 h-6 block" style="-webkit-mask: url('assets/icons/linkedin.svg') no-repeat center; mask: url('assets/icons/linkedin.svg') no-repeat center; -webkit-mask-size: contain; mask-size: contain;"></span>
+                </a>
+                <a href="https://x.com/hasandz" class="social-icon" aria-label="X (Twitter)">
+                    <span class="w-6 h-6 block" style="-webkit-mask: url('assets/icons/x.svg') no-repeat center; mask: url('assets/icons/x.svg') no-repeat center; -webkit-mask-size: contain; mask-size: contain;"></span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

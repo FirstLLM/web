@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Editor/IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+
+# Local environment
+.env
+.env.local
+
+# Thumbnails
+._*
+Thumbs.db
