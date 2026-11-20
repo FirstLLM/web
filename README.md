@@ -5,7 +5,7 @@ Landing page for the book "Build Your First LLM" published at [llm.degismez.com]
 ## Local Development
 
 ```bash
-cd web
+# From this repository’s root:
 python3 -m http.server 8000
 # Open http://localhost:8000
 ```
